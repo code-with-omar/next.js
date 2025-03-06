@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
   const links = [
@@ -17,17 +17,29 @@ const Navbar = () => {
       path: "/contact",
     },
   ];
+
   const pathName = usePathname();
+  const route = useRouter();
+  const userLoggin = false;
+
   console.log(pathName);
+
+  const handleNavigation = () => {
+    if (userLoggin) {
+      route.push("/dashboard");
+    } else {
+      route.push("/");
+    }
+  };
 
   return (
     <nav className="bg-red-500 px-6 py-4 flex justify-between items-center">
       <h6>Logo</h6>
-      <ul className="flex justify-between items-center space-x-4 ">
-        {links?.map((link) => (
+      <ul className="flex justify-between items-center space-x-4">
+        {links.map((link) => (
           <Link
             className={`${
-              pathName === link.path && "text-white"
+              pathName === link.path ? "text-white" : ""
             } hover:text-white`}
             key={link.title}
             href={link.path}
@@ -35,8 +47,16 @@ const Navbar = () => {
             {link.title}
           </Link>
         ))}
+        <button
+          type="button"
+          onClick={handleNavigation}
+          className={`${
+            pathName === "dashboard" ? "text-white" : ""
+          } hover:text-white`}
+        >
+          Dashboard
+        </button>
       </ul>
-      <button></button>
     </nav>
   );
 };
