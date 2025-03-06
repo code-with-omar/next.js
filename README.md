@@ -48,9 +48,7 @@ A page is UI that is rendered on a specific route. To create a page, add a page 
 <Link> is a built-in component that extends the HTML <a> tag to provide prefetching and client-side navigation between routes. It is the primary and recommended way to navigate between routes in Next.js.
 
 ```javascript
-
 import Link from "next/link";
-
 
 const Navbar = () => {
   const links = [
@@ -68,7 +66,7 @@ const Navbar = () => {
     },
   ];
 
-  const pathName = usePathname();
+  const pathName = usePathname(); // This hood find the current path of the rounter and store in pathName varialable
 
   const userLoggin = false;
 
@@ -97,7 +95,77 @@ const Navbar = () => {
             {link.title}
           </Link>
         ))}
-     
+      </ul>
+    </nav>
+  );
+};
+
+export default Navbar;
+```
+
+### 1.3 `useRouter() hook`
+
+The useRouter hook allows you to programmatically change routes from Client Components.
+
+```javascript
+"use client";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+
+const Navbar = () => {
+  const links = [
+    {
+      title: "About",
+      path: "/about",
+    },
+    {
+      title: "Service",
+      path: "/service",
+    },
+    {
+      title: "Contact",
+      path: "/contact",
+    },
+  ];
+
+  const pathName = usePathname();
+  const route = useRouter(); // it must be import from next/navigation
+  const userLoggin = false;
+
+  console.log(pathName);
+
+  const handleNavigation = () => {
+    if (userLoggin) {
+      route.push("/dashboard");
+    } else {
+      route.push("/");
+    }
+  };
+
+  return (
+    <nav className="bg-red-500 px-6 py-4 flex justify-between items-center">
+      <h6>Logo</h6>
+      <ul className="flex justify-between items-center space-x-4">
+        {links.map((link) => (
+          <Link
+            className={`${
+              pathName === link.path ? "text-white" : ""
+            } hover:text-white`}
+            key={link.title}
+            href={link.path}
+          >
+            {link.title}
+          </Link>
+        ))}
+        <button
+          type="button"
+          onClick={handleNavigation}
+          className={`${
+            pathName === "dashboard" ? "text-white" : ""
+          } hover:text-white`}
+        >
+          Dashboard
+        </button>
       </ul>
     </nav>
   );
