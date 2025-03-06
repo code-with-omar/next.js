@@ -1,8 +1,7 @@
 import React from "react";
-import Link from "next/link"; // Import Link component
 
-const Services = () => {
-  const servicesData = [
+export default function ServiceById({ params }) {
+  const serviceData = [
     {
       id: "abchekdhw1dfdfoiefdfb",
       image: "/man.png", // Use the relative path to public folder
@@ -32,26 +31,13 @@ const Services = () => {
         "We help you grow your business by creating effective digital marketing strategies that drive engagement and sales.",
     },
   ];
-
+  const findService = serviceData.find((service) => params.id === service.id);
+  console.log(findService);
   return (
     <div>
-      <h2>We provide these services</h2>
-      <div className="flex">
-        {servicesData.map((service) => (
-          <div key={service.id} className="">
-            <h3>{service.serviceName}</h3>
-            <div className="cursor-pointer">
-              <Link href={`service/${service.id}`}>
-                <img src={service.image} alt={service.serviceName} />
-              </Link>
-            </div>
-
-            <p>{service.serviceDetails}</p>
-          </div>
-        ))}
-      </div>
+      <h2>{findService.serviceName}</h2>
+      <img src={findService.image} alt="" />
+      <p>{findService.serviceDetails}</p>
     </div>
   );
-};
-
-export default Services;
+}
