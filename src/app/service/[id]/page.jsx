@@ -32,12 +32,20 @@ export default function ServiceById({ params }) {
     },
   ];
   const findService = serviceData.find((service) => params.id === service.id);
-  console.log(findService);
-  return (
-    <div>
-      <h2>{findService.serviceName}</h2>
-      <img src={findService.image} alt="" />
-      <p>{findService.serviceDetails}</p>
-    </div>
-  );
+  if (findService) {
+    return (
+      <div>
+        <h2>{findService.serviceName}</h2>
+        <img src={findService.image} alt="" />
+        <p>{findService.serviceDetails}</p>
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-1/2 mx-auto">
+        <h2>Not Found</h2>
+        <p>Could not find requested resource</p>
+      </div>
+    );
+  }
 }

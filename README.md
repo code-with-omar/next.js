@@ -35,15 +35,64 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## Chapter One -> Routing
+## Chapter One ->File conversion
 
-### 1.1 `Creating a page`
+### 1.1 Not Found page -> not-found.js/not-found.jsx/not-found.tsx
+
+The not-found file is used to render UI when the notFound function is thrown within a route segment. Along with serving a custom UI, Next.js will return a 200 HTTP status code for streamed responses, and 404 for non-streamed responses.`This component will be write in app route. Components name must be  {not-found.js/not-found.jsx/not-found.tsx} these formate`
+
+```javascript
+<div className="w-1/2 mx-auto">
+  <h2>Not Found</h2>
+  <p>Could not find requested resource</p>
+  <Link href="/">Return Home</Link>
+</div>
+```
+
+Note: If we have dynamic router it must validation for 404 page. so, we can `conditional randering`
+
+```javascript
+import React from "react";
+
+export default function ServiceById({ params }) {
+  const serviceData = [
+    {
+      id: "trpshg1kjfgh2348dflk2g",
+      image: "/women.png", // Use the relative path to public folder
+      serviceName: "Digital Marketing",
+      serviceDetails:
+        "We help you grow your business by creating effective digital marketing strategies that drive engagement and sales.",
+    },
+  ];
+  const findService = serviceData.find((service) => params.id === service.id);
+  if (findService) {
+    return (
+      <div>
+        <h2>{findService.serviceName}</h2>
+        <img src={findService.image} alt="" />
+        <p>{findService.serviceDetails}</p>
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-1/2 mx-auto">
+        <h2>Not Found</h2>
+        <p>Could not find requested resource</p>
+      </div>
+    );
+  }
+}
+```
+
+## Chapter rwo -> Routing
+
+### 2.1 `Creating a page`
 
 A page is UI that is rendered on a specific route. To create a page, add a page file inside the app directory and default export a React component. For example, to create an index page (/):
 
 ![Alt text](documentation_image/route-1.png)
 
-### 1.2 `<Link> Component`
+### 2.2 `<Link> Component`
 
 <Link> is a built-in component that extends the HTML <a> tag to provide prefetching and client-side navigation between routes. It is the primary and recommended way to navigate between routes in Next.js.
 
@@ -103,7 +152,7 @@ const Navbar = () => {
 export default Navbar;
 ```
 
-### 1.3 `useRouter() hook`
+### 2.3 `useRouter() hook`
 
 The useRouter hook allows you to programmatically change routes from Client Components.
 
@@ -174,7 +223,7 @@ const Navbar = () => {
 export default Navbar;
 ```
 
-### 1.4 `Dynamic Route`
+### 2.4 `Dynamic Route`
 
 A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
 

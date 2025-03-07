@@ -20,13 +20,13 @@ const Navbar = () => {
 
   const pathName = usePathname();
   const route = useRouter();
-  const userLoggin = false;
+  const userLoggin = true;
 
   console.log(pathName);
 
   const handleNavigation = () => {
     if (userLoggin) {
-      route.push("/dashboard");
+      route.push("/user-dashboard");
     } else {
       route.push("/");
     }
