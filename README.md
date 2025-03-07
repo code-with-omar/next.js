@@ -84,7 +84,19 @@ export default function ServiceById({ params }) {
 }
 ```
 
-## Chapter rwo -> Routing
+### 1.2 Loading page -> loading.js/jsx/tsx
+
+By default, this file is a Server Component - but can also be used as a Client Component through the "use client" directive.
+Note: Loading UI components do not accept any parameters.
+
+```javascript
+export default function Loading() {
+  // Or a custom loading skeleton component
+  return <p>Loading...</p>;
+}
+```
+
+## Chapter two -> Routing
 
 ### 2.1 `Creating a page`
 
