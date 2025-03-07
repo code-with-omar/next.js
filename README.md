@@ -303,18 +303,54 @@ export default function ServiceById({ params }) {
 
 - ### 2.5.2 `Check middleware and execute when middleware information valid`
 
-    ```javascript
-    import { NextResponse } from "next/server";
-    export function middleware(request) {
-      const isService = request.nextUrl.pathname.includes("/service");
-      const dummyUser = {
-        role: "admin",
-        email: "omarfaruk65142@gmail.com",
-      };
-      const isAdmin = dummyUser.role === "admin";
-      if (isService && !isAdmin) {
-        return NextResponse.redirect(new URL("/login", request.url));
-      }
-      return NextResponse.next();
+  ```javascript
+  import { NextResponse } from "next/server";
+  export function middleware(request) {
+    const isService = request.nextUrl.pathname.includes("/service");
+    const dummyUser = {
+      role: "admin",
+      email: "omarfaruk65142@gmail.com",
+    };
+    const isAdmin = dummyUser.role === "admin";
+    if (isService && !isAdmin) {
+      return NextResponse.redirect(new URL("/login", request.url));
     }
-    ```
+    return NextResponse.next();
+  }
+  ```
+
+## Chapter Three -> Randering
+
+### 3.1 Server Sider Randering
+
+```javascript
+export const getPosts = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  return res.json();
+};
+
+export default async function Posts() {
+  const posts = await getPosts();
+
+  return (
+    <div>
+      <h1 className="text-4xl py-3 text-blue-700 text-center">Posts</h1>
+      <ul className="grid grid-cols-3 gap-5">
+        {posts.map((post, index) => (
+          <li
+            key={post.id}
+            className={`
+                p-4 text-white
+                ${index % 3 === 0 ? "bg-red-500" : ""}
+                ${index % 3 === 1 ? "bg-green-500" : ""}
+                ${index % 3 === 2 ? "bg-blue-500" : ""}
+              `}
+          >
+            {post.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
