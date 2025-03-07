@@ -285,3 +285,36 @@ export default function ServiceById({ params }) {
   );
 }
 ```
+
+### 2.5 middleware
+
+- Middleware executes before routes are rendered. It's particularly useful for implementing custom server-side logic like authentication, logging, or handling redirects.
+
+- Use the file middleware.ts (or .js) in the root of your project to define Middleware. For example, at the same level as app or pages, or inside src if applicable.
+
+- ### 2.5.1 `NextResponse.next()` is use pass the middleware check anything
+
+  ```javascript
+  import { NextResponse } from "next/server";
+  export function middleware(request) {
+    return NextResponse.next();
+  }
+  ```
+
+  - ### 2.5.1 `Check middleware and execute when middleware information valid`
+
+    ```javascript
+    import { NextResponse } from "next/server";
+    export function middleware(request) {
+      const isService = request.nextUrl.pathname.includes("/service");
+      const dummyUser = {
+        role: "admin",
+        email: "omarfaruk65142@gmail.com",
+      };
+      const isAdmin = dummyUser.role === "admin";
+      if (isService && !isAdmin) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      return NextResponse.next();
+    }
+    ```

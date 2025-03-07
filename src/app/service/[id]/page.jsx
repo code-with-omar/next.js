@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function ServiceById({ params }) {
+export default async  function ServiceById({ params }) {
+  const { id } = await params
   const serviceData = [
     {
       id: "abchekdhw1dfdfoiefdfb",
@@ -31,7 +32,7 @@ export default function ServiceById({ params }) {
         "We help you grow your business by creating effective digital marketing strategies that drive engagement and sales.",
     },
   ];
-  const findService = serviceData.find((service) => params.id === service.id);
+  const findService = serviceData.find((service) => id === service.id);
   if (findService) {
     return (
       <div>
