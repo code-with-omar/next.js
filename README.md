@@ -301,7 +301,7 @@ export default function ServiceById({ params }) {
   }
   ```
 
-  - ### 2.5.1 `Check middleware and execute when middleware information valid`
+- ### 2.5.2 `Check middleware and execute when middleware information valid`
 
     ```javascript
     import { NextResponse } from "next/server";
