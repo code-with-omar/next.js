@@ -574,3 +574,40 @@ export async function generateMetadata({ params }) {
   };
 }
 ```
+
+### 4.1.3 Image
+
+```javascript
+import Image from "next/image";
+import profilePic from "./me.png";
+
+export default function Page() {
+  return (
+    <Image
+      src={profilePic}
+      alt="Picture of the author"
+      // width={500} automatically provided
+      // height={500} automatically provided
+      // blurDataURL="data:..." automatically provided
+      // placeholder="blur" // Optional blur-up while loading
+    />
+  );
+}
+```
+
+Note:
+
+- We can optionally configure localPatterns in your `next.config.js`file in order to allow specific images and block all others.
+
+```javascript
+module.exports = {
+  images: {
+    localPatterns: [
+      {
+        pathname: "/assets/images/**",
+        search: "",
+      },
+    ],
+  },
+};
+```

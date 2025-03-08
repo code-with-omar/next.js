@@ -1,10 +1,8 @@
 import Link from "next/link";
 import MealSearch from "./components/MealSearch";
+import Image from "next/image";
 
 async function fetchMeals(searchQuery) {
-  console.log(
-    `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
-  );
   try {
     const res = await fetch(
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
@@ -34,10 +32,12 @@ export default async function MealsPage({ searchParams }) {
                 <h2>{meal.strMeal}</h2>
                 <h3>Category: {meal.strCategory}</h3>
                 <div>
-                  <img
+                  <Image
                     src={meal.strMealThumb}
                     alt={meal.strMeal}
-                    className="w-full h-auto rounded"
+                    width={500}
+                    height={500}
+                    quality={80}
                   />
                 </div>
                 <Link href={`/meal/${meal.idMeal}`} className="px-4">
