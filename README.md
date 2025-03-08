@@ -461,6 +461,7 @@ export default function MealSearch() {
 ```
 
 ### 3.3.2 Server-side rendering for fetching data based on the client-side input value.
+
 Note:
 
 1. `searchParams :` In Next.js (App Router), searchParams is used to fetch the client-side input value from the URL query parameters. This allows server-side rendering (SSR) or static generation (SSG) to use the client-side search input without relying on client-side state management.
@@ -523,4 +524,37 @@ export default async function MealsPage({ searchParams }) {
     </div>
   );
 }
+```
+
+## Chapter Four -> Optimizing
+
+### 4.1 `Meta Data`
+
+Next.js has a Metadata API that can be used to define your application metadata (e.g. meta and link tags inside your HTML head element) for improved SEO and web shareability.
+There are two ways you can add metadata to your application:
+
+- `Config-based Metadata:` Export a static metadata object or a dynamic generateMetadata function in a layout.js or page.js file.
+- `File-based Metadata:` Add static or dynamically generated special files to route segments.
+
+### 4.1.1 `Static Metadata`
+
+To define static metadata, export a Metadata object from a layout.js or static page.js file.
+
+```javascript
+export const metadata = {
+  title: "Learning Next.js",
+  description: "Here I try to Learn Next.js for my carrier build-up",
+};
+```
+
+### 4.1.2 `Dynamic metaData use as templete`
+
+```javascript
+export const metadata = {
+  title: {
+    default: "Learning Next.js",
+    template: "%s | Learning Next.js",
+  },
+  description: "Here I try to Learn Next.js for my carrier build-up",
+};
 ```
