@@ -1,48 +1,53 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import MealSearch from "./components/MealSearch";
 
-export default function MealsPage() {
-  const [searchMeals, setSearchMeals] = useState("");
-  const [meals, setMeals] = useState([]);
+async function fetchMeals(searchQuery) {
+  console.log(
+    `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+  );
+  try {
+    const res = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+    );
+    const data = await res.json();
+    return data.meals || []; // Ensure it returns an array
+  } catch (error) {
+    console.error("Error fetching meals:", error);
+    return [];
+  }
+}
 
-  const fetchMeals = async () => {
-    try {
-      const res = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchMeals}`
-      );
-      const data = await res.json();
-      setMeals(data?.meals || []);
-    } catch (error) {
-      console.error("Error fetching meals:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMeals();
-  }, [searchMeals, meals]);
-
-  useEffect(() => {
-    console.log(meals);
-  }, [meals]);
+export default async function MealsPage({ searchParams }) {
+  const searchQuery = (await searchParams?.searchMeals) || "";
+  const meals = await fetchMeals(searchQuery);
 
   return (
     <div>
       <h2 className="text-center">Search meals for your dinner</h2>
-      <form className="text-center">
-        <input
-          type="text"
-          value={searchMeals}
-          onChange={(e) => setSearchMeals(e.target.value)}
-          className="border border-red-600"
-        />
-      </form>
-      <div className="mt-4 text-center">
+      <MealSearch />
+
+      <div className="mt-4 text-center py-4">
         {meals.length > 0 ? (
-          <ul>
+          <div className="grid grid-cols-4 gap-3">
             {meals.map((meal) => (
-              <li key={meal.idMeal}>{meal.strMeal}</li>
+              <div key={meal.idMeal} className="bg-green-600 p-4 rounded">
+                <h2>{meal.strMeal}</h2>
+                <h3>Category: {meal.strCategory}</h3>
+                <div>
+                  <img
+                    src={meal.strMealThumb}
+                    alt={meal.strMeal}
+                    className="w-full h-auto rounded"
+                  />
+                </div>
+                <Link href={`/meal/${meal.idMeal}`} className="px-4">
+                  <button className="bg-emerald-950 text-white px-4 py-2 mt-2 rounded">
+                    View Details
+                  </button>
+                </Link>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No meals found</p>
         )}

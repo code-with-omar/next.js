@@ -321,6 +321,10 @@ export default function ServiceById({ params }) {
 
 ## Chapter Three -> Randering
 
+### When to use Server and Client Components?
+
+![Alt text](documentation_image/randering.png)
+
 ### 3.1 Server Sider Randering
 
 ```javascript
@@ -405,6 +409,113 @@ export default function MealsPage() {
               <li key={meal.idMeal}>{meal.strMeal}</li>
             ))}
           </ul>
+        ) : (
+          <p>No meals found</p>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+### 3.3 If we look at the above table, we can see that `useState` and `useEffect` are used on the client side, while data fetching is done on the server side. Therefore, we need the following system.
+
+### 3.3.1 Client side used for serverside randering
+
+Note:
+
+1. The `URLSearchParams`interface defines utility methods to work with the query string of a URL.
+
+2. `router:` Used to programmatically navigate to different pages or update the URL.
+3. `pathName:` Gets the current URL path.
+
+```javascript
+"use client";
+
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+export default function MealSearch() {
+  const [searchMeals, setSearchMeals] = useState("");
+  const router = useRouter();
+  const pathName = usePathname();
+  useEffect(() => {
+    const searchQuery = { searchMeals };
+    const urlQueryParam = new URLSearchParams(searchQuery);
+    const url = `${pathName}?${urlQueryParam}`;
+    router.push(url);
+  }, [searchMeals]);
+  return (
+    <div>
+      <form className="text-center">
+        <input
+          type="text"
+          value={searchMeals}
+          onChange={(e) => setSearchMeals(e.target.value)}
+          className="border border-red-600"
+        />
+      </form>
+    </div>
+  );
+}
+```
+
+### 3.3.2 Server-side rendering for fetching data based on the client-side input value.
+Note:
+
+1. `searchParams :` In Next.js (App Router), searchParams is used to fetch the client-side input value from the URL query parameters. This allows server-side rendering (SSR) or static generation (SSG) to use the client-side search input without relying on client-side state management.
+
+```javascript
+import Link from "next/link";
+import MealSearch from "./components/MealSearch";
+
+async function fetchMeals(searchQuery) {
+  console.log(
+    `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+  );
+  try {
+    const res = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+    );
+    const data = await res.json();
+    return data.meals || []; // Ensure it returns an array
+  } catch (error) {
+    console.error("Error fetching meals:", error);
+    return [];
+  }
+}
+
+export default async function MealsPage({ searchParams }) {
+  const searchQuery = (await searchParams?.searchMeals) || "";
+  const meals = await fetchMeals(searchQuery);
+
+  return (
+    <div>
+      <h2 className="text-center">Search meals for your dinner</h2>
+      <MealSearch />
+
+      <div className="mt-4 text-center py-4">
+        {meals.length > 0 ? (
+          <div className="grid grid-cols-4 gap-3">
+            {meals.map((meal) => (
+              <div key={meal.idMeal} className="bg-green-600 p-4 rounded">
+                <h2>{meal.strMeal}</h2>
+                <h3>Category: {meal.strCategory}</h3>
+                <div>
+                  <img
+                    src={meal.strMealThumb}
+                    alt={meal.strMeal}
+                    className="w-full h-auto rounded"
+                  />
+                </div>
+                <Link href={`/meal/${meal.idMeal}`} className="px-4">
+                  <button className="bg-emerald-950 text-white px-4 py-2 mt-2 rounded">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            ))}
+          </div>
         ) : (
           <p>No meals found</p>
         )}
