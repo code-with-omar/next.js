@@ -558,3 +558,19 @@ export const metadata = {
   description: "Here I try to Learn Next.js for my carrier build-up",
 };
 ```
+
+### 4.1.2 Dynamic metaData
+
+- You can use `generateMetadata` function to fetch metadata that requires dynamic values.
+
+```javascript
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const singlePostData = res.json();
+  return {
+    title: singlePostData.title,
+    description: singlePostData.body,
+  };
+}
+```

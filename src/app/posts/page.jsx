@@ -4,10 +4,12 @@ export const getPosts = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
   return res.json();
 };
-
+export const metadata = {
+  title: "Posts",
+  description: "Here show all user posts",
+};
 export default async function Posts() {
   const posts = await getPosts();
-
   return (
     <div>
       <h1 className="text-4xl py-3 text-blue-700 text-center">Posts</h1>

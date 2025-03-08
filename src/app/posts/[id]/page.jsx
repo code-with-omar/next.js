@@ -8,7 +8,15 @@ export const singlePost = async (user_id) => {
   console.log(data);
   return data;
 };
-
+// Meta Data load as dynamic by generateMetadata function
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const singlePostData = await singlePost(id);
+  return {
+    title: singlePostData.title,
+    description: singlePostData.body,
+  };
+}
 export default async function Post({ params }) {
   const { id } = await params;
   const singlePostData = await singlePost(id);
