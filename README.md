@@ -559,7 +559,7 @@ export const metadata = {
 };
 ```
 
-### 4.1.2 Dynamic metaData
+### 4.1.3 Dynamic metaData
 
 - You can use `generateMetadata` function to fetch metadata that requires dynamic values.
 
@@ -575,7 +575,7 @@ export async function generateMetadata({ params }) {
 }
 ```
 
-### 4.1.3 Image
+### 4.2 Image
 
 ```javascript
 import Image from "next/image";
@@ -610,4 +610,29 @@ module.exports = {
     ],
   },
 };
+```
+
+### 4.3 Fonts
+
+- next/font will automatically optimize your fonts (including custom fonts) and remove external network requests for improved privacy and performance.
+- next/font includes built-in automatic self-hosting for any font file. This means you can optimally load web fonts with zero layout shift, thanks to the underlying CSS size-adjust property used.
+
+- This new font system also allows you to conveniently use all Google Fonts with performance and privacy in mind. CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. No requests are sent to Google by the browser.
+
+```javascript
+import { Inter } from "next/font/google";
+
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={inter.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
 ```
