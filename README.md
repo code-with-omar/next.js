@@ -423,6 +423,8 @@ Note
 
 ```javascript
 import dbConnect from "@/lib/dbConnect";
+import { ObjectId } from "mongodb";
+import dbConnect from "@/lib/dbConnect";
 export async function GET() {
   const data = await dbConnect("posts").find({}).toArray();
   return Response.json(data);
@@ -432,6 +434,8 @@ export async function GET() {
 ### 2.7.2 `POST` One Data in database
 
 ```javascript
+import dbConnect from "@/lib/dbConnect";
+import { ObjectId } from "mongodb";
 export async function POST(req) {
   const postedData = await req.json();
   const result = await dbConnect("posts").insertOne(postedData);
@@ -442,6 +446,8 @@ export async function POST(req) {
 ### 2.7.3 `GET` one data from the database with specific condition
 
 ```javascript
+import dbConnect from "@/lib/dbConnect";
+import { ObjectId } from "mongodb";
 export async function GET(req, { params }) {
   const p = await params;
   const singleData = await dbConnect("posts").findOne({
@@ -451,6 +457,31 @@ export async function GET(req, { params }) {
 }
 ```
 
+### 2.7.4 `Update -> PATCH`
+
+```javascript
+import dbConnect from "@/lib/dbConnect";
+import { ObjectId } from "mongodb";
+export async function PATCH(req, { params }) {
+  try {
+    const { id } = params;
+    const postedData = await req.json(); // Await JSON parsing
+    // if (!ObjectId.isValid(id)) {
+    //   return Response.json({ error: "Invalid ID" }, { status: 400 });
+    // }
+    const filter = { _id: new ObjectId(id) };
+    const update = { $set: postedData }; // Properly set update object
+
+    const updatedResponse = await dbConnect("posts").updateOne(filter, update, {
+      upsert: true,
+    });
+
+    return Response.json(updatedResponse);
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+}
+```
 
 ## Chapter Three -> Randering
 
