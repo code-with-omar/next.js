@@ -395,6 +395,40 @@ export async function PATCH(req, params) {
 }
 ```
 
+### 2.7 Route Handlers -> API Route(CRUD operation) with mongoDB dataBase
+
+1. Create MongoDB Database
+2. Connect With MongoDB Databae
+
+```javascript
+import { MongoClient, ServerApiVersion } from "mongodb";
+function dbConnect(collectionName) {
+  const uri = process.env.MONGODB_URL;
+  const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+  return client.db(process.env.DB_NAME).collection(collectionName);
+}
+export default dbConnect;
+```
+
+Note
+1.Create the `dbConnect function outside` the src directory and place it in a file named `lib`.
+
+### 2.7.1 `GET` all data
+
+```javascript
+import dbConnect from "@/lib/dbConnect";
+export async function GET() {
+  const data = await dbConnect("posts").find({}).toArray();
+  return Response.json(data);
+}
+```
+
 ## Chapter Three -> Randering
 
 ### When to use Server and Client Components?
