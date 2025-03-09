@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+
 // get all data from the mongoDB database
 export async function GET() {
   const data = await dbConnect("posts").find({}).toArray();

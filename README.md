@@ -439,6 +439,19 @@ export async function POST(req) {
 }
 ```
 
+### 2.7.3 `GET` one data from the database with specific condition
+
+```javascript
+export async function GET(req, { params }) {
+  const p = await params;
+  const singleData = await dbConnect("posts").findOne({
+    _id: new ObjectId(p.id),
+  });
+  return Response.json(singleData);
+}
+```
+
+
 ## Chapter Three -> Randering
 
 ### When to use Server and Client Components?
