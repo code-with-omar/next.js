@@ -421,8 +421,6 @@ Note
 
 ### 2.7.1 `GET` all data
 
-### 2.7.2 `POST` One Data in database
-
 ```javascript
 import dbConnect from "@/lib/dbConnect";
 export async function GET() {
@@ -430,6 +428,8 @@ export async function GET() {
   return Response.json(data);
 }
 ```
+
+### 2.7.2 `POST` One Data in database
 
 ```javascript
 export async function POST(req) {
