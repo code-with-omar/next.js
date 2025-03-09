@@ -429,6 +429,14 @@ export async function GET() {
 }
 ```
 
+```javascript
+export async function POST(req) {
+  const postedData = await req.json();
+  const result = await dbConnect("posts").insertOne(postedData);
+  return Response.json(result);
+}
+```
+
 ## Chapter Three -> Randering
 
 ### When to use Server and Client Components?
