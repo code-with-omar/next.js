@@ -319,6 +319,82 @@ export default function ServiceById({ params }) {
   }
   ```
 
+### 2.6 Route Handlers -> API Route(CRUD operation)
+
+![Alt text](documentation_image/api.png)
+
+- ### 2.6.1 `GET`
+
+```javascript
+export async function GET() {
+  const data = {
+    message: "Successfully get data",
+    error: false,
+    status: 200,
+  };
+  return Response.json({ data });
+}
+```
+
+- ### 2.6.2 `POST`
+
+```javascript
+export async function POST(req) {
+  const data = await req.json();
+  return NextResponse.json({ data });
+}
+```
+
+Note:
+
+1. using NextResponse (recommended in Next.js 15)
+
+```javascript
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+  const data = await req.json();
+  return NextResponse.json({ data });
+}
+```
+
+- ### Dynamic -> GET,POST,UPDATE,DELETE in specific condition
+- ### 2.6.3 `GET`
+
+```javascript
+export async function GET(req, params) {
+  const p = await params;
+  return Response.json({ params: p });
+}
+```
+
+- ### 2.6.4 `POST`
+
+```javascript
+export async function POST(req, params) {
+  const p = await params;
+  return Response.json({ params: p });
+}
+```
+
+### 2.6.5 'DELETE'
+
+```javascript
+export async function DELETE(req, params) {
+  const p = await params;
+  return Response.json({ params: p });
+}
+```
+
+### 2.6.6 'UPDATE'
+
+```javascript
+export async function PATCH(req, params) {
+  const p = await params;
+  return Response.json({ params: p });
+}
+```
+
 ## Chapter Three -> Randering
 
 ### When to use Server and Client Components?
