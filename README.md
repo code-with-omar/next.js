@@ -483,6 +483,20 @@ export async function PATCH(req, { params }) {
 }
 ```
 
+### 2.7.5 `DELETE`
+
+```javascript
+import dbConnect from "@/lib/dbConnect";
+import { ObjectId } from "mongodb";
+export async function DELETE(req, { params }) {
+  const p = await params;
+  const response = await dbConnect("posts").deleteOne({
+    _id: new ObjectId(p.id),
+  });
+  return Response.json(response);
+}
+```
+
 ## Chapter Three -> Randering
 
 ### When to use Server and Client Components?
