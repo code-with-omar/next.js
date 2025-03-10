@@ -377,7 +377,7 @@ export async function POST(req, params) {
 }
 ```
 
-### 2.6.5 'DELETE'
+### 2.6.5 `DELETE`
 
 ```javascript
 export async function DELETE(req, params) {
@@ -386,7 +386,7 @@ export async function DELETE(req, params) {
 }
 ```
 
-### 2.6.6 'UPDATE'
+### 2.6.6 `UPDATE`
 
 ```javascript
 export async function PATCH(req, params) {
@@ -812,5 +812,69 @@ export default function RootLayout({ children }) {
       <body>{children}</body>
     </html>
   );
+}
+```
+
+### Chapter Five -> Data Fetching
+
+### 5.1 `Caching and Revalidating`
+
+Data fetching with force-caching means the data is loaded into the cache once and does not update. When the user wants to view the data, it is loaded from the cache instead of fetching new data.
+
+```javascript
+import Link from "next/link";
+
+export const getPosts = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    cache: "force-cache",
+  });
+  return res.json();
+};
+export const metadata = {
+  title: "Posts",
+  description: "Here show all user posts",
+};
+export default async function Posts() {
+  const posts = await getPosts();
+  return (
+    <div>
+      <h1 className="text-4xl py-3 text-blue-700 text-center">Posts</h1>
+      <div className="grid grid-cols-3 gap-5">
+        {posts.map((post, index) => (
+          <div
+            key={post.id}
+            className={`p-4 text-white 
+                ${index % 3 === 0 ? "bg-red-500" : ""}
+                ${index % 3 === 1 ? "bg-green-500" : ""}
+                ${index % 3 === 2 ? "bg-blue-500" : ""}
+              `}
+          >
+            <h2>{post.title}</h2>
+            <div>
+              <Link
+                href={`posts/${post.id}`}
+                className="bg-black text-white px-5"
+              >
+                <button>Show Details</button>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+1. 1. Revalidation: When we update, insert, or delete any value via the API, we use revalidation if the fetch side is using `force-caching`-> `revalidatePath()`
+
+```javascript
+import dbConnect from "@/lib/dbConnect";
+import { revalidatePath } from "next/cache";
+// get all data from the mongoDB database
+export async function GET() {
+  const data = await dbConnect("posts").find({}).toArray();
+  revalidatePath("posts");
+  return Response.json(data);
 }
 ```

@@ -24,6 +24,14 @@ const Navbar = () => {
       title: "Meals",
       path: "/meals",
     },
+    {
+      title: "Products",
+      path: "/products",
+    },
+    {
+      title: "Add Products",
+      path: "/products/add",
+    },
   ];
 
   const pathName = usePathname();
