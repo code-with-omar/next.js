@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import LoginButton from "./LoginButton";
 
 const Navbar = () => {
   const links = [
@@ -37,9 +38,6 @@ const Navbar = () => {
   const pathName = usePathname();
   const route = useRouter();
   const userLoggin = true;
-
-  console.log(pathName);
-
   const handleNavigation = () => {
     if (userLoggin) {
       route.push("/user-dashboard");
@@ -72,6 +70,7 @@ const Navbar = () => {
         >
           Dashboard
         </button>
+        <LoginButton>LogIn</LoginButton>
       </ul>
     </nav>
   );
