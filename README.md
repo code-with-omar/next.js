@@ -994,6 +994,7 @@ Note :
 
 - I first created a `providers` folder inside the `src` directory and then added the `NextAuthProviders.jsx` component. Anyone can use any format, not just the route-based approach."
 - Then, `wrap` the main layout of the web application with the `NextAuthProviders` component
+- Here useSession() hook find the user staus
 
 ```javascript
 import NextAuthProviders from "@/providers/NextAuthProviders";
@@ -1009,4 +1010,18 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+```
+
+```javaScript
+"use client";
+// It is serverside components
+import { useSession } from "next-auth/react";
+
+export default function UserInfo() {
+  const session = useSession();
+  console.log(session);
+  console.log(session);
+  return <p>{JSON.stringify(session)}</p>;
+}
+
 ```
