@@ -908,7 +908,7 @@ pnpm add next-auth
 
 `Add API route:` To add NextAuth.js to a project create a file called [...nextauth].js in pages/api/auth. This contains the dynamic route handler for NextAuth.js which will also contain all of your global NextAuth.js configurations.
 
-### Login with email and passward
+### 1. Login with email and passward
 
 ### app -> api -> auth -> [...nextauth] -> route.js (or route.ts)
 
@@ -958,5 +958,55 @@ export { handler as GET, handler as POST };
 import { signIn } from "next-auth/react";
 export default function LoginButton() {
   return <button onClick={() => signIn()}>Sign In</button>;
+}
+```
+
+### 2. Configure Shared session state -> User state check
+
+- To be able to use useSession first you'll need to expose the session context, <SessionProvider />, at the top level of your application:
+
+```javascript
+
+import { SessionProvider } from "next-auth/react"
+
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
+  return (
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  )
+}
+
+// example
+"use client";
+import { SessionProvider } from "next-auth/react";
+
+export default function NextAuthProviders({ children }) {
+  return <SessionProvider>{children}</SessionProvider>;
+}
+
+```
+
+Note :
+
+- I first created a `providers` folder inside the `src` directory and then added the `NextAuthProviders.jsx` component. Anyone can use any format, not just the route-based approach."
+- Then, `wrap` the main layout of the web application with the `NextAuthProviders` component
+
+```javascript
+import NextAuthProviders from "@/providers/NextAuthProviders";
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={roboto.className}>
+        <NextAuthProviders>
+          <Navbar />
+          {children}
+        </NextAuthProviders>
+      </body>
+    </html>
+  );
 }
 ```
