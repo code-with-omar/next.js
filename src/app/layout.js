@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import UserInfo from "./components/UserInfo";
+
 import NextAuthSessionProviders from "@/providers/NextAuthSessionProviders";
 
 export const metadata = {
@@ -24,7 +24,6 @@ export default function RootLayout({ children }) {
         <NextAuthSessionProviders>
           <Navbar />
           {children}
-          <UserInfo />
         </NextAuthSessionProviders>
       </body>
     </html>
